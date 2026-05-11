@@ -3,45 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log Perbaikan Mesin - Maintenance System</title>
+    <title>Maintenance Log System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>🛠️ Log Maintenance & Repair</h2>
+    <header>
+        <h1>🛠️ LOG PERBAIKAN MESIN</h1>
+        <p>Knowledge Base Maintenance Industrial</p>
+    </header>
 
-    <div class="form-section">
-        <h3>Input Data Perbaikan Baru</h3>
+    <section class="form-section">
+        <h3>Pencatatan Trouble Baru</h3>
         <form id="repairForm">
-            <div class="grid-input">
-                <input type="text" id="machineName" placeholder="Nama Mesin / Line" required>
-                <input type="text" id="trouble" placeholder="Masalah (Trouble)" required>
-                <textarea id="action" placeholder="Langkah Perbaikan (Solusi)" required></textarea>
-                <input type="date" id="repairDate" required>
-                <button type="submit">Simpan Log Perbaikan</button>
+            <div class="main-grid">
+                <div class="input-group">
+                    <label>Nama Mesin / Line</label>
+                    <input type="text" id="machineName" placeholder="Contoh: Robot Line A" required>
+                </div>
+                <div class="input-group">
+                    <label>Tanggal Perbaikan</label>
+                    <input type="date" id="repairDate" required>
+                </div>
+                <div class="input-group full-width">
+                    <label>Gejala / Masalah (Trouble)</label>
+                    <input type="text" id="trouble" placeholder="Deskripsi singkat kerusakan" required>
+                </div>
+
+                <div class="steps-container full-width">
+                    <label>Langkah-langkah Perbaikan (Step-by-Step):</label>
+                    <div id="stepsList">
+                        <div class="step-item">
+                            <span class="step-number">1</span>
+                            <input type="text" class="step-input" placeholder="Langkah pertama..." required>
+                        </div>
+                    </div>
+                    <button type="button" id="addStepBtn" class="btn-add-step">+ Tambah Langkah</button>
+                </div>
+
+                <button type="submit" class="btn-submit">SIMPAN DATA PERBAIKAN</button>
             </div>
         </form>
-    </div>
+    </section>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Cari mesin atau masalah yang pernah terjadi..." onkeyup="searchLogs()">
-    </div>
+    <section class="search-section">
+        <input type="text" id="searchInput" placeholder="🔍 Cari histori berdasarkan nama mesin atau gejala..." onkeyup="searchLogs()">
+    </section>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Tanggal</th>
-                    <th>Nama Mesin</th>
-                    <th>Masalah</th>
-                    <th>Solusi / Cara Perbaikan</th>
-                </tr>
-            </thead>
-            <tbody id="logTableBody">
-                </tbody>
-        </table>
-    </div>
+    <section class="table-section">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="15%">Tanggal</th>
+                        <th width="20%">Mesin</th>
+                        <th width="25%">Masalah</th>
+                        <th width="40%">Langkah Perbaikan</th>
+                    </tr>
+                </thead>
+                <tbody id="logTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </section>
 </div>
 
 <script src="script.js"></script>
