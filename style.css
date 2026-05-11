@@ -1,183 +1,52 @@
-:root {
-    --bg-dark: #0d1117;
-    --card-bg: #161b22;
-    --primary-neon: #00f2ff;
-    --text-main: #c9d1d9;
-    --text-dim: #8b949e;
-    --border-color: #30363d;
-    --accent-yellow: #ffeb3b;
-}
+/* ... (Gunakan style dari kode sebelumnya, lalu tambahkan ini) ... */
 
-body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    margin: 0;
-    padding: 20px;
-    line-height: 1.6;
-}
+tr { cursor: pointer; transition: 0.2s; }
+tr:hover { background: rgba(0, 242, 255, 0.05); }
 
-.container {
-    max-width: 1100px;
-    margin: auto;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid var(--primary-neon);
-    padding-bottom: 10px;
-}
-
-header h1 {
-    color: var(--primary-neon);
-    margin: 0;
-    letter-spacing: 2px;
-}
-
-header p {
-    color: var(--text-dim);
-    font-size: 0.9em;
-}
-
-/* Form Styles */
-.form-section {
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 30px;
-}
-
-.main-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.full-width { grid-column: span 2; }
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--primary-neon);
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
-input, .step-input {
-    width: 100%;
-    padding: 12px;
-    background: #0d1117;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    color: white;
-    box-sizing: border-box;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--primary-neon);
-    box-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
-}
-
-/* Steps Styling */
-.steps-container {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.step-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.step-number {
-    background: var(--primary-neon);
-    color: #000;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-weight: bold;
-    font-size: 0.8em;
-    flex-shrink: 0;
-}
-
-.btn-add-step {
-    background: transparent;
-    color: var(--primary-neon);
-    border: 1px dashed var(--primary-neon);
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 10px;
-}
-
-.btn-submit {
-    grid-column: span 2;
-    background: var(--primary-neon);
-    color: #000;
-    border: none;
-    padding: 15px;
-    font-weight: bold;
-    font-size: 1em;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-submit:hover {
-    filter: brightness(1.2);
-    transform: translateY(-2px);
-}
-
-/* Search and Table */
-.search-section input {
-    font-size: 1.1em;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 30px;
-}
-
-.table-wrapper {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card-bg);
-}
-
-th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-th {
+.btn-view {
     background: #21262d;
     color: var(--primary-neon);
-    text-transform: uppercase;
-    font-size: 0.85em;
+    border: 1px solid var(--primary-neon);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
 }
 
-.highlight-trouble {
-    color: var(--accent-yellow);
+/* MODAL STYLES */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--primary-neon);
+    width: 60%;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.step-list {
-    margin: 0;
-    padding-left: 20px;
-}
+.close-btn:hover { color: var(--primary-neon); }
 
-.step-list li {
-    margin-bottom: 5px;
-}
+.detail-group { margin-top: 20px; }
+.detail-group h4 { color: var(--text-dim); margin-bottom: 5px; text-transform: uppercase; font-size: 0.8em; }
+
+.highlight-yellow { color: var(--accent-yellow); font-weight: bold; background: rgba(255, 235, 59, 0.1); padding: 5px 10px; border-radius: 4px; display: inline-block; }
+
+.modal-step-list { padding-left: 20px; }
+.modal-step-list li { margin-bottom: 10px; border-bottom: 1px dashed #30363d; padding-bottom: 5px; }
