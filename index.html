@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance Cloud System</title>
+    <title>Maintenance Cloud System v3</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,11 +12,11 @@
 <div class="container">
     <header>
         <h1>🛠️ LOG PERBAIKAN MESIN</h1>
-        <p>Industrial Maintenance Knowledge Base (Cloud Sync)</p>
+        <p>Industrial Maintenance Database & Knowledge Base</p>
     </header>
 
     <section class="form-section">
-        <h3>Pencatatan Trouble Baru</h3>
+        <h3>Input Perbaikan Baru</h3>
         <form id="repairForm">
             <div class="main-grid">
                 <div class="input-group">
@@ -28,24 +28,30 @@
                     <input type="date" id="repairDate" required>
                 </div>
                 <div class="input-group full-width">
-                    <label>Gejala / Masalah (Trouble)</label>
-                    <input type="text" id="trouble" placeholder="Deskripsi singkat kerusakan" required>
+                    <label>Masalah (Trouble)</label>
+                    <input type="text" id="trouble" placeholder="Gejala kerusakan..." required>
                 </div>
                 
                 <div class="input-group full-width">
-                    <label>Spare Part yang Diganti (Pisahkan dengan koma)</label>
+                    <label>Spare Part yang Diganti</label>
                     <input type="text" id="partsChanged" placeholder="Contoh: Sensor Proximity, Fuse 5A">
                 </div>
 
+                <div class="input-group full-width">
+                    <label>Foto Kerusakan / Perbaikan (Auto-Compress)</label>
+                    <input type="file" id="imageInput" accept="image/*" capture="environment">
+                    <small id="statusFoto">Maksimal 100KB (Otomatis)</small>
+                </div>
+
                 <div class="steps-container full-width">
-                    <label>Langkah-langkah Perbaikan (Sequential Steps):</label>
+                    <label>Langkah-langkah Perbaikan:</label>
                     <div id="stepsList">
                         <div class="step-item">
                             <span class="step-number">1</span>
-                            <input type="text" class="step-input" placeholder="Langkah pertama..." required>
+                            <input type="text" class="step-input" placeholder="Langkah 1..." required>
                         </div>
                     </div>
-                    <button type="button" id="addStepBtn" class="btn-add-step">+ Tambah Langkah</button>
+                    <button type="button" id="addStepBtn" class="btn-secondary">+ Tambah Langkah</button>
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn-submit">SIMPAN DATA KE CLOUD</button>
@@ -54,45 +60,40 @@
     </section>
 
     <section class="search-section">
-        <input type="text" id="searchInput" placeholder="🔍 Cari histori perbaikan..." onkeyup="searchLogs()">
+        <input type="text" id="searchInput" placeholder="🔍 Cari histori..." onkeyup="searchLogs()">
     </section>
 
-    <section class="table-section">
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="15%">Tanggal</th>
-                        <th width="25%">Mesin</th>
-                        <th width="45%">Masalah</th>
-                        <th width="15%">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="logTableBody">
-                    </tbody>
-            </table>
-        </div>
-    </section>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Mesin</th>
+                    <th>Masalah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="logTableBody"></tbody>
+        </table>
+    </div>
 </div>
 
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
-        <h2 id="modalTitle">Detail Perbaikan</h2>
+        <h2 id="modalTitle" style="color:var(--primary-neon)">Detail</h2>
         <div class="divider"></div>
-        
+        <img id="modalImgDisplay" class="modal-image" style="display:none">
         <div class="detail-group">
             <h4>🛠️ Masalah:</h4>
             <p id="modalTrouble"></p>
         </div>
-
         <div class="detail-group">
             <h4>📦 Part Diganti:</h4>
             <p id="modalParts" class="highlight-yellow"></p>
         </div>
-
         <div class="detail-group">
-            <h4>📋 Langkah Perbaikan:</h4>
+            <h4>📋 Prosedur Perbaikan:</h4>
             <ol id="modalSteps" class="modal-step-list"></ol>
         </div>
     </div>
