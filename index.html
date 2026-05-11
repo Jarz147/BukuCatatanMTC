@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Perbaikan Mesin - Maintenance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>🛠️ Log Maintenance & Repair</h2>
+
+    <div class="form-section">
+        <h3>Input Data Perbaikan Baru</h3>
+        <form id="repairForm">
+            <div class="grid-input">
+                <input type="text" id="machineName" placeholder="Nama Mesin / Line" required>
+                <input type="text" id="trouble" placeholder="Masalah (Trouble)" required>
+                <textarea id="action" placeholder="Langkah Perbaikan (Solusi)" required></textarea>
+                <input type="date" id="repairDate" required>
+                <button type="submit">Simpan Log Perbaikan</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Cari mesin atau masalah yang pernah terjadi..." onkeyup="searchLogs()">
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Nama Mesin</th>
+                    <th>Masalah</th>
+                    <th>Solusi / Cara Perbaikan</th>
+                </tr>
+            </thead>
+            <tbody id="logTableBody">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
