@@ -25,74 +25,58 @@ header {
     padding-bottom: 15px;
 }
 
-header h1 { color: var(--primary-neon); margin: 0; letter-spacing: 2px; }
+header h1 { color: var(--primary-neon); text-transform: uppercase; letter-spacing: 2px; }
 
-/* Form Section */
 .form-section {
-    background: var(--card-bg);
-    padding: 25px; border-radius: 12px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 30px;
+    background: var(--card-bg); padding: 25px; border-radius: 12px;
+    border: 1px solid var(--border-color); margin-bottom: 30px;
 }
 
 .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .full-width { grid-column: span 2; }
 
-.input-group label {
-    display: block; margin-bottom: 8px;
-    color: var(--text-dim); font-size: 0.85em; font-weight: bold;
-}
+.input-group label { display: block; margin-bottom: 8px; color: var(--text-dim); font-size: 0.85em; font-weight: bold; }
 
 input {
     width: 100%; padding: 12px; background: #0d1117;
-    border: 1px solid var(--border-color); border-radius: 6px;
-    color: white; box-sizing: border-box;
+    border: 1px solid var(--border-color); border-radius: 6px; color: white;
 }
 
 input:focus { outline: none; border-color: var(--primary-neon); }
 
-/* Steps */
 .step-item { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 .step-number {
-    background: var(--primary-neon); color: #000;
-    width: 24px; height: 24px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    background: var(--primary-neon); color: #000; width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-weight: bold; font-size: 12px;
 }
 
 .btn-add-step {
-    background: transparent; color: var(--primary-neon);
-    border: 1px dashed var(--primary-neon);
-    padding: 8px 16px; cursor: pointer; border-radius: 4px;
+    background: transparent; color: var(--primary-neon); border: 1px dashed var(--primary-neon);
+    padding: 8px 16px; cursor: pointer; border-radius: 4px; margin-top: 5px;
 }
 
 .btn-submit {
-    grid-column: span 2; background: var(--primary-neon);
-    color: #000; border: none; padding: 15px;
-    font-weight: bold; border-radius: 6px; cursor: pointer;
+    grid-column: span 2; background: var(--primary-neon); color: #000;
+    border: none; padding: 15px; font-weight: bold; border-radius: 6px; cursor: pointer;
 }
 
-/* Table */
 .table-section { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
-th { background: #21262d; color: var(--primary-neon); }
+th { background: #21262d; color: var(--primary-neon); font-size: 0.8em; }
 tr:hover { background: rgba(0, 242, 255, 0.05); cursor: pointer; }
 
 /* Modal */
 .modal {
-    display: none; position: fixed; z-index: 1000;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
 }
 .modal-content {
     background: var(--card-bg); margin: 5% auto; padding: 30px;
-    border: 1px solid var(--primary-neon); width: 90%; max-width: 600px;
-    border-radius: 15px; position: relative;
+    border: 1px solid var(--primary-neon); width: 90%; max-width: 600px; border-radius: 15px;
 }
-.close-btn { position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer; color: var(--text-dim); }
-.close-btn:hover { color: var(--danger); }
+.close-btn { position: absolute; right: 25px; top: 15px; font-size: 30px; cursor: pointer; color: var(--text-dim); }
 .divider { height: 1px; background: var(--border-color); margin: 15px 0; }
 .highlight-yellow { color: var(--accent-yellow); font-weight: bold; }
 .modal-step-list { padding-left: 20px; }
-.modal-step-list li { margin-bottom: 10px; }
