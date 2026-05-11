@@ -25,10 +25,34 @@
                 </div>
                 <div class="input-group">
                     <label>Tanggal Perbaikan (Klik untuk Pilih)</label>
-                    <input type="date" id="repairDate" required 
-                           readonly 
-                           onfocus="this.showPicker()" 
-                           onclick="this.showPicker()">
+                    <div class="date-picker-wrapper">
+                        <div class="date-input-container">
+                            <input type="text" id="repairDateDisplay" placeholder="Pilih tanggal..." readonly>
+                            <span class="date-picker-icon">📅</span>
+                        </div>
+                        <input type="hidden" id="repairDate">
+                        <div id="datePickerContainer" class="date-picker-container" style="display: none;">
+                            <div class="date-picker-header">
+                                <button id="prevMonthBtn" class="date-nav-btn" type="button">◀</button>
+                                <span id="monthYearDisplay" class="month-year-display"></span>
+                                <button id="nextMonthBtn" class="date-nav-btn" type="button">▶</button>
+                            </div>
+                            <div class="date-picker-weekdays">
+                                <div class="weekday">Min</div>
+                                <div class="weekday">Sen</div>
+                                <div class="weekday">Sel</div>
+                                <div class="weekday">Rab</div>
+                                <div class="weekday">Kam</div>
+                                <div class="weekday">Jum</div>
+                                <div class="weekday">Sab</div>
+                            </div>
+                            <div id="datePickerDays" class="date-picker-days"></div>
+                            <div class="date-picker-footer">
+                                <button id="todayBtn" class="date-action-btn" type="button">Hari Ini</button>
+                                <button id="clearBtn" class="date-action-btn clear" type="button">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group full-width">
                     <label>Masalah (Trouble)</label>
