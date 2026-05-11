@@ -24,8 +24,11 @@
                     <input type="text" id="machineName" placeholder="Contoh: Robot Line A" required>
                 </div>
                 <div class="input-group">
-                    <label>Tanggal Perbaikan</label>
-                    <input type="date" id="repairDate" required>
+                    <label>Tanggal Perbaikan (Klik untuk Pilih)</label>
+                    <input type="date" id="repairDate" required 
+                           readonly 
+                           onfocus="this.showPicker()" 
+                           onclick="this.showPicker()">
                 </div>
                 <div class="input-group full-width">
                     <label>Masalah (Trouble)</label>
