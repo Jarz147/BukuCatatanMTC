@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance Log System - Cloud</title>
+    <title>Maintenance Cloud System</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,7 +12,7 @@
 <div class="container">
     <header>
         <h1>🛠️ LOG PERBAIKAN MESIN</h1>
-        <p>Database Perbaikan Cloud - Realtime Sync</p>
+        <p>Industrial Maintenance Knowledge Base (Cloud Sync)</p>
     </header>
 
     <section class="form-section">
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="steps-container full-width">
-                    <label>Langkah-langkah Perbaikan (Step-by-Step):</label>
+                    <label>Langkah-langkah Perbaikan (Sequential Steps):</label>
                     <div id="stepsList">
                         <div class="step-item">
                             <span class="step-number">1</span>
@@ -54,7 +54,7 @@
     </section>
 
     <section class="search-section">
-        <input type="text" id="searchInput" placeholder="🔍 Cari histori berdasarkan mesin, masalah, atau part..." onkeyup="searchLogs()">
+        <input type="text" id="searchInput" placeholder="🔍 Cari histori perbaikan..." onkeyup="searchLogs()">
     </section>
 
     <section class="table-section">
@@ -62,10 +62,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Tanggal</th>
-                        <th>Mesin</th>
-                        <th>Masalah</th>
-                        <th>Aksi</th>
+                        <th width="15%">Tanggal</th>
+                        <th width="25%">Mesin</th>
+                        <th width="45%">Masalah</th>
+                        <th width="15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="logTableBody">
@@ -82,17 +82,17 @@
         <div class="divider"></div>
         
         <div class="detail-group">
-            <h4>🛠️ Gejala / Masalah:</h4>
+            <h4>🛠️ Masalah:</h4>
             <p id="modalTrouble"></p>
         </div>
 
         <div class="detail-group">
-            <h4>📦 Spare Part yang Diganti:</h4>
+            <h4>📦 Part Diganti:</h4>
             <p id="modalParts" class="highlight-yellow"></p>
         </div>
 
         <div class="detail-group">
-            <h4>📋 Langkah-langkah Perbaikan:</h4>
+            <h4>📋 Langkah Perbaikan:</h4>
             <ol id="modalSteps" class="modal-step-list"></ol>
         </div>
     </div>
