@@ -12,7 +12,7 @@
 <div class="container">
     <header>
         <h1>🛠️ LOG PERBAIKAN MESIN</h1>
-        <p>Database Maintenance SANKEI - Cloud Sync</p>
+        <p>Database Maintenance Industrial - Cloud Sync</p>
     </header>
 
     <section class="form-section">
@@ -24,8 +24,11 @@
                     <input type="text" id="machineName" placeholder="Contoh: Robot Line A" required>
                 </div>
                 <div class="input-group">
-                    <label for="repairDate">Tanggal Perbaikan</label>
-                    <input type="date" id="repairDate" name="repairDate" required autocomplete="off">
+                    <label>Tanggal Perbaikan (Klik untuk Pilih)</label>
+                    <input type="date" id="repairDate" required 
+                           readonly 
+                           onfocus="this.showPicker()" 
+                           onclick="this.showPicker()">
                 </div>
                 <div class="input-group full-width">
                     <label>Masalah (Trouble)</label>
