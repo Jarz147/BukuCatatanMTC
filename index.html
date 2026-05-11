@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance Log System</title>
+    <title>Maintenance Log System v2</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
 <div class="container">
     <header>
         <h1>🛠️ LOG PERBAIKAN MESIN</h1>
-        <p>Knowledge Base Maintenance Industrial</p>
+        <p>Klik pada baris histori untuk melihat detail perbaikan</p>
     </header>
 
     <section class="form-section">
@@ -30,9 +30,14 @@
                     <label>Gejala / Masalah (Trouble)</label>
                     <input type="text" id="trouble" placeholder="Deskripsi singkat kerusakan" required>
                 </div>
+                
+                <div class="input-group full-width">
+                    <label>Spare Part yang Diganti (Pisahkan dengan koma)</label>
+                    <input type="text" id="partsChanged" placeholder="Contoh: Sensor Proximity, Kabel AWG24, Fuse 5A">
+                </div>
 
                 <div class="steps-container full-width">
-                    <label>Langkah-langkah Perbaikan (Step-by-Step):</label>
+                    <label>Langkah-langkah Perbaikan:</label>
                     <div id="stepsList">
                         <div class="step-item">
                             <span class="step-number">1</span>
@@ -42,31 +47,51 @@
                     <button type="button" id="addStepBtn" class="btn-add-step">+ Tambah Langkah</button>
                 </div>
 
-                <button type="submit" class="btn-submit">SIMPAN DATA PERBAIKAN</button>
+                <button type="submit" class="btn-submit">SIMPAN DATA</button>
             </div>
         </form>
     </section>
 
     <section class="search-section">
-        <input type="text" id="searchInput" placeholder="🔍 Cari histori berdasarkan nama mesin atau gejala..." onkeyup="searchLogs()">
+        <input type="text" id="searchInput" placeholder="🔍 Cari histori..." onkeyup="searchLogs()">
     </section>
 
     <section class="table-section">
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="15%">Tanggal</th>
-                        <th width="20%">Mesin</th>
-                        <th width="25%">Masalah</th>
-                        <th width="40%">Langkah Perbaikan</th>
-                    </tr>
-                </thead>
-                <tbody id="logTableBody">
-                    </tbody>
-            </table>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Mesin</th>
+                    <th>Masalah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="logTableBody"></tbody>
+        </table>
     </section>
+</div>
+
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 id="modalTitle" style="color: var(--primary-neon);">Detail Perbaikan</h2>
+        <hr border="1" color="#30363d">
+        
+        <div class="detail-group">
+            <h4>🛠️ Masalah:</h4>
+            <p id="modalTrouble"></p>
+        </div>
+
+        <div class="detail-group">
+            <h4>📦 Spare Part yang Diganti:</h4>
+            <p id="modalParts" class="highlight-yellow"></p>
+        </div>
+
+        <div class="detail-group">
+            <h4>📋 Langkah-langkah Perbaikan:</h4>
+            <ol id="modalSteps" class="modal-step-list"></ol>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
