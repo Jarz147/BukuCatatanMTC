@@ -12,7 +12,7 @@
 <div class="container">
     <header>
         <h1>🛠️ LOG PERBAIKAN MESIN</h1>
-        <p>Industrial Maintenance Database & Knowledge Base</p>
+        <p>Database Maintenance Industrial - Cloud Sync</p>
     </header>
 
     <section class="form-section">
@@ -38,9 +38,9 @@
                 </div>
 
                 <div class="input-group full-width">
-                    <label>Foto Kerusakan / Perbaikan (Auto-Compress)</label>
+                    <label>Foto Kerusakan (Auto-Compress < 100KB)</label>
                     <input type="file" id="imageInput" accept="image/*" capture="environment">
-                    <small id="statusFoto">Maksimal 100KB (Otomatis)</small>
+                    <small id="statusFoto" style="display: block; margin-top: 5px; color: #8b949e;">Maksimal 100KB (Otomatis)</small>
                 </div>
 
                 <div class="steps-container full-width">
@@ -60,17 +60,17 @@
     </section>
 
     <section class="search-section">
-        <input type="text" id="searchInput" placeholder="🔍 Cari histori..." onkeyup="searchLogs()">
+        <input type="text" id="searchInput" placeholder="🔍 Cari histori (Mesin/Trouble/Part)..." onkeyup="searchLogs()">
     </section>
 
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th>Tanggal</th>
-                    <th>Mesin</th>
-                    <th>Masalah</th>
-                    <th>Aksi</th>
+                    <th width="15%">Tanggal</th>
+                    <th width="25%">Mesin</th>
+                    <th width="45%">Masalah</th>
+                    <th width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody id="logTableBody"></tbody>
