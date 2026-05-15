@@ -10,13 +10,13 @@
 <body>
     <div class="container">
         <header>
-            <h1><span class="neon-text">MAINTENANCE</span> DIARY </h1>
-            <p class="subtitle">Kumpulan Masalah Dan Pemecahannya</p>
+            <h1><span class="neon-text">REPAIR</span> LOG SYSTEM</h1>
+            <p class="subtitle">Industrial Automation Maintenance Database</p>
         </header>
 
         <section class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari keyword masalah (contoh: 'Overheat', 'E-Stop')...">
+                <input type="text" id="searchInput" placeholder="Cari keyword (Contoh: Overheat, E-Stop, Sensor)...">
                 <button id="searchBtn">CARI</button>
             </div>
         </section>
@@ -37,7 +37,11 @@
                         <label>Langkah-langkah Perbaikan</label>
                         <textarea id="repairSteps" rows="4" required placeholder="Tuliskan solusi langkah demi langkah..."></textarea>
                     </div>
-                    <button type="submit" class="submit-btn">SIMPAN DATA</button>
+                    <div class="input-group">
+                        <label>Lampiran (Gambar atau PDF, Maks 500KB)</label>
+                        <input type="file" id="fileInput" accept="image/*,application/pdf">
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">SIMPAN DATA</button>
                 </form>
             </div>
         </section>
@@ -45,12 +49,11 @@
         <section class="results-section">
             <h3>Hasil Pencarian / Database</h3>
             <div id="resultsContainer" class="results-grid">
-                <!-- Data dari Supabase akan muncul di sini -->
+                <!-- Data akan muncul di sini -->
             </div>
         </section>
     </div>
 
-    <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
