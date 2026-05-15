@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance Error LOG</title>
+    <title>Repair Log System</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="neon-text">MAINTENANCE</span>ERROR LOG</h1>
-            <p class="subtitle">Auto-Compress Enabled (Target 100KB</p>
+            <div class="logo-wrapper">
+                <img src="image-removebg-preview (5).png" alt="Logo" class="main-logo">
+            </div>
+            <p class="subtitle">Industrial Maintenance Database v2.0</p>
         </header>
 
         <section class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari keyword masalah...">
+                <input type="text" id="searchInput" placeholder="Cari mesin atau kode error...">
                 <button id="searchBtn">CARI</button>
             </div>
         </section>
 
         <section class="form-section">
             <div class="glass-card">
-                <h3>Tambah Catatan</h3>
+                <h3>Input Data Perbaikan</h3>
                 <form id="repairForm">
                     <div class="input-group">
                         <label>Nama Mesin</label>
@@ -38,11 +40,11 @@
                         <textarea id="repairSteps" rows="4" required></textarea>
                     </div>
                     <div class="input-group">
-                        <label>Lampiran (Gambar auto-compress, PDF maks 100KB)</label>
+                        <label>Lampiran (Foto/PDF - Auto Compress)</label>
                         <input type="file" id="fileInput" accept="image/*,application/pdf">
                         <small id="statusCompress" style="color: var(--accent-color); display:block; margin-top:5px;"></small>
                     </div>
-                    <button type="submit" class="submit-btn" id="submitBtn">SIMPAN DATA</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">SIMPAN KE DATABASE</button>
                 </form>
             </div>
         </section>
