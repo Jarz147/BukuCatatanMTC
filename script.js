@@ -16,6 +16,7 @@ async function fetchLogs(keyword = '') {
         .order('created_at', { ascending: false });
 
     if (keyword) {
+        // Mencari keyword di kolom machine_name, error_code, atau steps
         query = query.or(`machine_name.ilike.%${keyword}%,error_code.ilike.%${keyword}%,steps.ilike.%${keyword}%`);
     }
 
@@ -46,11 +47,29 @@ function renderLogs(logs) {
                 <span class="machine-tag">${log.machine_name}</span>
                 <span class="error-tag">${log.error_code}</span>
             </div>
-            <div class="steps-text">${log.steps}</div>
-            <div class="date-text">Logged at: ${date}</div>
+            
+            <button class="detail-btn" onclick="toggleDetail(this)">LIHAT DETAIL PERBAIKAN</button>
+            
+            <div class="steps-container">
+                <span class="steps-label">Langkah Perbaikan:</span>
+                <div class="steps-text">${log.steps}</div>
+                <div class="date-text">Logged at: ${date}</div>
+            </div>
         `;
         resultsContainer.appendChild(card);
     });
+}
+
+// Fungsi bantu untuk buka-tutup detail
+function toggleDetail(btn) {
+    const container = btn.nextElementSibling;
+    container.classList.toggle('active');
+    
+    if (container.classList.contains('active')) {
+        btn.innerText = 'TUTUP DETAIL';
+    } else {
+        btn.innerText = 'LIHAT DETAIL PERBAIKAN';
+    }
 }
 
 // Event Listener untuk Submit Form
@@ -70,7 +89,7 @@ repairForm.addEventListener('submit', async (e) => {
     } else {
         alert('Data berhasil disimpan!');
         repairForm.reset();
-        fetchLogs();
+        fetchLogs(); // Refresh list
     }
 });
 
@@ -85,5 +104,5 @@ searchInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Load data awal
+// Load data pertama kali saat web dibuka
 fetchLogs();
