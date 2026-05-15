@@ -6,9 +6,7 @@
     --text-primary: #e0e0e0;
     --text-dim: #a0a0a0;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
@@ -16,100 +14,51 @@ body {
     background-image: radial-gradient(circle at 50% 50%, #1a1f2c 0%, #0b0e14 100%);
     min-height: 100vh;
 }
-
-.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-
-header { text-align: center; margin-bottom: 50px; }
-
-h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; letter-spacing: 4px; }
-
+.container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+header { text-align: center; margin-bottom: 40px; }
+h1 { font-family: 'Orbitron', sans-serif; font-size: 2rem; letter-spacing: 4px; }
 .neon-text { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
-
-.subtitle { color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
-
-.search-box { display: flex; gap: 10px; margin-bottom: 40px; }
-
+.subtitle { color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; }
+.search-box { display: flex; gap: 10px; margin-bottom: 30px; }
 input, textarea {
     background: rgba(255, 255, 255, 0.07);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 12px 15px;
+    padding: 10px;
     border-radius: 4px;
     width: 100%;
+    font-family: inherit;
 }
-
-button {
-    cursor: pointer;
-    background: var(--accent-color);
-    border: none;
-    color: black;
-    font-weight: bold;
-    padding: 10px 25px;
-    border-radius: 4px;
-    font-family: 'Orbitron', sans-serif;
-}
-
 .glass-card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 40px;
+    padding: 25px;
+    border-radius: 12px;
 }
-
 .input-group { margin-bottom: 15px; }
-
-.input-group label { display: block; margin-bottom: 5px; color: var(--text-dim); }
-
+.input-group label { display: block; margin-bottom: 5px; color: var(--text-dim); font-size: 0.9rem; }
 .submit-btn {
     width: 100%;
     background: transparent;
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
-    margin-top: 10px;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Orbitron';
 }
-
 .submit-btn:hover { background: var(--accent-color); color: black; }
-
 .log-card {
     background: rgba(255, 255, 255, 0.03);
     border-left: 4px solid var(--neon-purple);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 0 10px 10px 0;
+    padding: 15px;
+    margin-top: 20px;
 }
-
 .detail-btn {
-    margin-top: 10px;
-    background: transparent;
-    border: 1px solid var(--neon-purple);
-    color: var(--neon-purple);
-    padding: 5px 15px;
-    font-size: 0.8rem;
+    background: none; border: 1px solid var(--neon-purple); color: var(--neon-purple);
+    padding: 5px 10px; margin: 10px 0; cursor: pointer; font-size: 0.8rem;
 }
-
-.steps-container {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-}
-
-.steps-container.active {
-    max-height: 2000px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.attachment-link {
-    display: inline-block;
-    color: var(--accent-color);
-    text-decoration: none;
-    border: 1px dashed var(--accent-color);
-    padding: 8px;
-    margin: 10px 0;
-    font-size: 0.9rem;
-}
-
-.date-text { font-size: 0.75rem; color: var(--text-dim); text-align: right; }
+.steps-container { max-height: 0; overflow: hidden; transition: 0.4s; }
+.steps-container.active { max-height: 1000px; padding-top: 10px; border-top: 1px solid #333; }
+.attachment-link { color: var(--accent-color); text-decoration: none; font-size: 0.9rem; display: block; margin-top: 10px; }
