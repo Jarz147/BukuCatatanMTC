@@ -1,108 +1,101 @@
-// KONFIGURASI SUPABASE
 const SUPABASE_URL = 'https://neapdsjsqpcsxhxjwyik.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lYXBkc2pzcXBjc3hoeGp3eWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0Nzg0NjgsImV4cCI6MjA5NDA1NDQ2OH0.0MK6HwbDBA9jTj-_ESGvs-ErCvcnQqlqAVGqEv_gG-w';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const repairForm = document.getElementById('repairForm');
 const resultsContainer = document.getElementById('resultsContainer');
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
+const fileInput = document.getElementById('fileInput');
+const submitBtn = document.getElementById('submitBtn');
 
-// Fungsi untuk mengambil data (Search/List All)
 async function fetchLogs(keyword = '') {
-    let query = supabaseClient
-        .from('repair_logs')
-        .select('*')
-        .order('created_at', { ascending: false });
-
+    let query = supabaseClient.from('repair_logs').select('*').order('created_at', { ascending: false });
     if (keyword) {
-        // Mencari keyword di kolom machine_name, error_code, atau steps
         query = query.or(`machine_name.ilike.%${keyword}%,error_code.ilike.%${keyword}%,steps.ilike.%${keyword}%`);
     }
-
     const { data, error } = await query;
-
-    if (error) {
-        console.error('Error fetching logs:', error);
-        return;
-    }
-
-    renderLogs(data);
+    if (!error) renderLogs(data);
 }
 
-// Fungsi untuk menampilkan data ke HTML
 function renderLogs(logs) {
     resultsContainer.innerHTML = '';
-    if (logs.length === 0) {
-        resultsContainer.innerHTML = '<p style="color: grey; text-align: center;">Tidak ada data ditemukan.</p>';
-        return;
-    }
-
     logs.forEach(log => {
         const date = new Date(log.created_at).toLocaleString('id-ID');
         const card = document.createElement('div');
         card.className = 'log-card';
+        
+        let fileHTML = log.file_url ? `<a href="${log.file_url}" target="_blank" class="attachment-link">📄 Buka Lampiran (PDF/Gambar)</a>` : '';
+
         card.innerHTML = `
-            <div class="log-header">
-                <span class="machine-tag">${log.machine_name}</span>
-                <span class="error-tag">${log.error_code}</span>
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span style="color:var(--accent-color)">${log.machine_name}</span>
+                <span style="color:var(--neon-purple)">${log.error_code}</span>
             </div>
-            
-            <button class="detail-btn" onclick="toggleDetail(this)">LIHAT DETAIL PERBAIKAN</button>
-            
+            <button class="detail-btn" onclick="toggleDetail(this)">LIHAT DETAIL</button>
             <div class="steps-container">
-                <span class="steps-label">Langkah Perbaikan:</span>
-                <div class="steps-text">${log.steps}</div>
-                <div class="date-text">Logged at: ${date}</div>
+                <p style="white-space:pre-line; line-height:1.6;">${log.steps}</p>
+                ${fileHTML}
+                <div class="date-text">Waktu: ${date}</div>
             </div>
         `;
         resultsContainer.appendChild(card);
     });
 }
 
-// Fungsi bantu untuk buka-tutup detail
 function toggleDetail(btn) {
     const container = btn.nextElementSibling;
     container.classList.toggle('active');
-    
-    if (container.classList.contains('active')) {
-        btn.innerText = 'TUTUP DETAIL';
-    } else {
-        btn.innerText = 'LIHAT DETAIL PERBAIKAN';
-    }
+    btn.innerText = container.classList.contains('active') ? 'TUTUP DETAIL' : 'LIHAT DETAIL';
 }
 
-// Event Listener untuk Submit Form
 repairForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    const machine_name = document.getElementById('machineName').value;
-    const error_code = document.getElementById('errorCode').value;
-    const steps = document.getElementById('repairSteps').value;
+    submitBtn.disabled = true;
+    submitBtn.innerText = "SEDANG MENGIRIM...";
 
-    const { data, error } = await supabaseClient
-        .from('repair_logs')
-        .insert([{ machine_name, error_code, steps }]);
+    const file = fileInput.files[0];
+    let fileUrl = null;
 
-    if (error) {
-        alert('Gagal menyimpan data: ' + error.message);
-    } else {
-        alert('Data berhasil disimpan!');
+    if (file) {
+        // Cek ukuran file (Sekarang 500 KB)
+        if (file.size > 500 * 1024) {
+            alert("File terlalu besar! Maksimal 500KB agar PDF lancar.");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "SIMPAN DATA";
+            return;
+        }
+
+        const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+            .from('repair_files')
+            .upload(fileName, file);
+
+        if (!uploadError) {
+            const { data: publicUrlData } = supabaseClient.storage
+                .from('repair_files')
+                .getPublicUrl(fileName);
+            fileUrl = publicUrlData.publicUrl;
+        } else {
+            console.error("Upload error:", uploadError);
+        }
+    }
+
+    const { error } = await supabaseClient.from('repair_logs').insert([{
+        machine_name: document.getElementById('machineName').value,
+        error_code: document.getElementById('errorCode').value,
+        steps: document.getElementById('repairSteps').value,
+        file_url: fileUrl
+    }]);
+
+    if (!error) {
+        alert('Data dan File berhasil disimpan!');
         repairForm.reset();
-        fetchLogs(); // Refresh list
+        fetchLogs();
+    } else {
+        alert('Gagal simpan database: ' + error.message);
     }
+    submitBtn.disabled = false;
+    submitBtn.innerText = "SIMPAN DATA";
 });
 
-// Event Listener untuk Pencarian
-searchBtn.addEventListener('click', () => {
-    fetchLogs(searchInput.value);
-});
-
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        fetchLogs(searchInput.value);
-    }
-});
-
-// Load data pertama kali saat web dibuka
+document.getElementById('searchBtn').onclick = () => fetchLogs(document.getElementById('searchInput').value);
 fetchLogs();
