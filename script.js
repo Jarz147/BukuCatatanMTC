@@ -7,7 +7,6 @@ const fileInput = document.getElementById('fileInput');
 const submitBtn = document.getElementById('submitBtn');
 const statusCompress = document.getElementById('statusCompress');
 
-// Fungsi Kompresi Gambar
 async function compressImage(file) {
     return new Promise((resolve) => {
         const reader = new FileReader();
@@ -20,14 +19,12 @@ async function compressImage(file) {
                 let width = img.width;
                 let height = img.height;
                 const max_size = 1000;
-
                 if (width > height && width > max_size) { height *= max_size / width; width = max_size; }
                 else if (height > max_size) { width *= max_size / height; height = max_size; }
-
                 canvas.width = width; canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.6); // Kualitas 60%
+                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.6);
             };
         };
     });
@@ -65,7 +62,6 @@ repairForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
     submitBtn.innerText = "MEMPROSES...";
-
     let file = fileInput.files[0];
     let fileUrl = null;
 
@@ -75,17 +71,12 @@ repairForm.addEventListener('submit', async (e) => {
                 statusCompress.innerText = "Mengompres gambar...";
                 file = await compressImage(file);
             }
-            
             if (file.size > 105 * 1024) {
-                alert("Ukuran file (setelah kompres) masih di atas 100KB. Gunakan file lebih kecil.");
-                throw new Error("Size limit");
+                alert("File masih di atas 100KB. Gunakan file lebih kecil.");
+                throw new Error("Limit");
             }
-
             const fileName = `${Date.now()}_file`;
-            const { data: uploadData, error: upErr } = await supabaseClient.storage
-                .from('repair_files')
-                .upload(fileName, file);
-
+            const { data: uploadData, error: upErr } = await supabaseClient.storage.from('repair_files').upload(fileName, file);
             if (upErr) throw upErr;
             const { data } = supabaseClient.storage.from('repair_files').getPublicUrl(fileName);
             fileUrl = data.publicUrl;
@@ -97,16 +88,10 @@ repairForm.addEventListener('submit', async (e) => {
             steps: document.getElementById('repairSteps').value,
             file_url: fileUrl
         }]);
-
         if (insErr) throw insErr;
-
-        alert("Berhasil disimpan!");
-        repairForm.reset();
-        statusCompress.innerText = "";
-        fetchLogs();
+        alert("Berhasil!"); repairForm.reset(); statusCompress.innerText = ""; fetchLogs();
     } catch (err) {
         alert("Gagal: " + err.message);
-        console.error(err);
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = "SIMPAN KE DATABASE";
