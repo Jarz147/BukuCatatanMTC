@@ -3,43 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Industrial Machine Repair Log</title>
+    <title>Repair Log System - Auto Compress</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="neon-text">REPAIR</span> LOG SYSTEM</h1>
-            <p class="subtitle">Industrial Automation Maintenance Database</p>
+            <h1><span class="neon-text">REPAIR</span> LOG</h1>
+            <p class="subtitle">Auto-Compress Enabled (Target 100KB)</p>
         </header>
 
         <section class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari keyword (Contoh: Overheat, E-Stop, Sensor)...">
+                <input type="text" id="searchInput" placeholder="Cari keyword masalah...">
                 <button id="searchBtn">CARI</button>
             </div>
         </section>
 
         <section class="form-section">
             <div class="glass-card">
-                <h3>Tambah Catatan Perbaikan Baru</h3>
+                <h3>Tambah Catatan</h3>
                 <form id="repairForm">
                     <div class="input-group">
-                        <label>Nama Mesin / Line</label>
-                        <input type="text" id="machineName" required placeholder="Contoh: Robot Line 1">
+                        <label>Nama Mesin</label>
+                        <input type="text" id="machineName" required>
                     </div>
                     <div class="input-group">
-                        <label>Masalah / Error Code</label>
-                        <input type="text" id="errorCode" required placeholder="Contoh: E-004 Motor Jam">
+                        <label>Error Code</label>
+                        <input type="text" id="errorCode" required>
                     </div>
                     <div class="input-group">
-                        <label>Langkah-langkah Perbaikan</label>
-                        <textarea id="repairSteps" rows="4" required placeholder="Tuliskan solusi langkah demi langkah..."></textarea>
+                        <label>Langkah Perbaikan</label>
+                        <textarea id="repairSteps" rows="4" required></textarea>
                     </div>
                     <div class="input-group">
-                        <label>Lampiran (Gambar atau PDF, Maks 500KB)</label>
+                        <label>Lampiran (Gambar auto-compress, PDF maks 100KB)</label>
                         <input type="file" id="fileInput" accept="image/*,application/pdf">
+                        <small id="statusCompress" style="color: var(--accent-color); display:block; margin-top:5px;"></small>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">SIMPAN DATA</button>
                 </form>
@@ -47,10 +48,7 @@
         </section>
 
         <section class="results-section">
-            <h3>Hasil Pencarian / Database</h3>
-            <div id="resultsContainer" class="results-grid">
-                <!-- Data akan muncul di sini -->
-            </div>
+            <div id="resultsContainer" class="results-grid"></div>
         </section>
     </div>
 
