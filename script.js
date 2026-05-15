@@ -3,79 +3,106 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const repairForm = document.getElementById('repairForm');
-const resultsContainer = document.getElementById('resultsContainer');
 const fileInput = document.getElementById('fileInput');
 const submitBtn = document.getElementById('submitBtn');
+const statusCompress = document.getElementById('statusCompress');
 
-async function fetchLogs(keyword = '') {
-    let query = supabaseClient.from('repair_logs').select('*').order('created_at', { ascending: false });
-    if (keyword) {
-        query = query.or(`machine_name.ilike.%${keyword}%,error_code.ilike.%${keyword}%,steps.ilike.%${keyword}%`);
-    }
-    const { data, error } = await query;
-    if (!error) renderLogs(data);
-}
+// FUNGSI KOMPRES GAMBAR (TARGET 100KB)
+async function compressImage(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
 
-function renderLogs(logs) {
-    resultsContainer.innerHTML = '';
-    logs.forEach(log => {
-        const date = new Date(log.created_at).toLocaleString('id-ID');
-        const card = document.createElement('div');
-        card.className = 'log-card';
-        
-        let fileHTML = log.file_url ? `<a href="${log.file_url}" target="_blank" class="attachment-link">📄 Buka Lampiran (PDF/Gambar)</a>` : '';
+                // Resize jika terlalu besar (max 1200px)
+                const max_size = 1200;
+                if (width > height && width > max_size) {
+                    height *= max_size / width;
+                    width = max_size;
+                } else if (height > max_size) {
+                    width *= max_size / height;
+                    height = max_size;
+                }
 
-        card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; font-weight:bold;">
-                <span style="color:var(--accent-color)">${log.machine_name}</span>
-                <span style="color:var(--neon-purple)">${log.error_code}</span>
-            </div>
-            <button class="detail-btn" onclick="toggleDetail(this)">LIHAT DETAIL</button>
-            <div class="steps-container">
-                <p style="white-space:pre-line; line-height:1.6;">${log.steps}</p>
-                ${fileHTML}
-                <div class="date-text">Waktu: ${date}</div>
-            </div>
-        `;
-        resultsContainer.appendChild(card);
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Mulai kompresi dengan kualitas 0.7 (70%)
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg', 0.7); 
+            };
+        };
     });
 }
 
-function toggleDetail(btn) {
-    const container = btn.nextElementSibling;
-    container.classList.toggle('active');
-    btn.innerText = container.classList.contains('active') ? 'TUTUP DETAIL' : 'LIHAT DETAIL';
+async function fetchLogs(keyword = '') {
+    let query = supabaseClient.from('repair_logs').select('*').order('created_at', { ascending: false });
+    if (keyword) query = query.or(`machine_name.ilike.%${keyword}%,error_code.ilike.%${keyword}%,steps.ilike.%${keyword}%`);
+    const { data } = await query;
+    if (data) renderLogs(data);
+}
+
+function renderLogs(logs) {
+    const container = document.getElementById('resultsContainer');
+    container.innerHTML = '';
+    logs.forEach(log => {
+        const card = document.createElement('div');
+        card.className = 'log-card';
+        card.innerHTML = `
+            <div style="display:flex; justify-content:space-between;">
+                <b style="color:var(--accent-color)">${log.machine_name}</b>
+                <span style="color:var(--neon-purple)">${log.error_code}</span>
+            </div>
+            <button class="detail-btn" onclick="this.nextElementSibling.classList.toggle('active')">DETAIL</button>
+            <div class="steps-container">
+                <p style="white-space:pre-line">${log.steps}</p>
+                ${log.file_url ? `<a href="${log.file_url}" target="_blank" class="attachment-link">📎 Lampiran</a>` : ''}
+            </div>
+        `;
+        container.appendChild(card);
+    });
 }
 
 repairForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
-    submitBtn.innerText = "SEDANG MENGIRIM...";
+    submitBtn.innerText = "MENGOMPRES & MENGIRIM...";
 
-    const file = fileInput.files[0];
+    let file = fileInput.files[0];
     let fileUrl = null;
 
     if (file) {
-        // Cek ukuran file (Sekarang 500 KB)
-        if (file.size > 500 * 1024) {
-            alert("File terlalu besar! Maksimal 500KB agar PDF lancar.");
+        // Jika file adalah gambar, kompres dulu
+        if (file.type.startsWith('image/')) {
+            statusCompress.innerText = "Sistem sedang mengecilkan ukuran gambar...";
+            file = await compressImage(file);
+        }
+
+        // Cek ukuran akhir (tetap jaga-jaga jika PDF atau hasil kompres tetap > 100KB)
+        if (file.size > 105 * 1024) { 
+            alert(`Ukuran file masih terlalu besar (${(file.size/1024).toFixed(1)} KB). Gunakan file yang lebih kecil.`);
             submitBtn.disabled = false;
             submitBtn.innerText = "SIMPAN DATA";
             return;
         }
 
-        const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        const fileName = `${Date.now()}_repair_file`;
+        const { data: uploadData } = await supabaseClient.storage
             .from('repair_files')
             .upload(fileName, file);
 
-        if (!uploadError) {
-            const { data: publicUrlData } = supabaseClient.storage
-                .from('repair_files')
-                .getPublicUrl(fileName);
-            fileUrl = publicUrlData.publicUrl;
-        } else {
-            console.error("Upload error:", uploadError);
+        if (uploadData) {
+            const { data } = supabaseClient.storage.from('repair_files').getPublicUrl(fileName);
+            fileUrl = data.publicUrl;
         }
     }
 
@@ -87,11 +114,10 @@ repairForm.addEventListener('submit', async (e) => {
     }]);
 
     if (!error) {
-        alert('Data dan File berhasil disimpan!');
+        alert("Data berhasil disimpan!");
         repairForm.reset();
+        statusCompress.innerText = "";
         fetchLogs();
-    } else {
-        alert('Gagal simpan database: ' + error.message);
     }
     submitBtn.disabled = false;
     submitBtn.innerText = "SIMPAN DATA";
